@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Oil)
 
 -- telescope keymaps
 local builtin = require "telescope.builtin"
@@ -10,4 +10,8 @@ end)
 
 -- fugitive
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+
+-- comments
+vim.keymap.set("n", "<leader>/", "gcc", { remap = true })
+vim.keymap.set("v", "<leader>/", "gcgv", { remap = true })
 

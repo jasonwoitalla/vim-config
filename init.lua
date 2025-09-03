@@ -1,4 +1,4 @@
-require "opts"
+require "options"
 require "launch"
 
 -- Plugins
@@ -7,6 +7,8 @@ spec("plugin.treesitter")
 spec("plugin.telescope")
 spec("plugin.fugitive")
 spec("plugin.lspconfig")
+spec("plugin.oil")
+spec("plugin.autopairs")
 
 require "plugin.lazy"
 require "keymaps"
