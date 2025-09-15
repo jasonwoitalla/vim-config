@@ -1,11 +1,9 @@
 vim.lsp.enable("pyright")
 vim.lsp.enable("ts_ls")
 vim.lsp.enable("lua_ls")
-
--- Typesciprt Config
-vim.lsp.config("ts_ls", {
-    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "ts", "js" }
-})
+vim.lsp.enable("yamlls")
+vim.lsp.enable("helm_ls")
+vim.lsp.enable("terraformls")
 
 -- Lua Config
 vim.lsp.config('lua_ls', {
@@ -42,13 +40,6 @@ vim.lsp.config('lua_ls', {
           -- '${3rd}/luv/library'
           -- '${3rd}/busted/library'
         }
-        -- Or pull in all of 'runtimepath'.
-        -- NOTE: this is a lot slower and will cause issues when working on
-        -- your own configuration.
-        -- See https://github.com/neovim/nvim-lspconfig/issues/3189
-        -- library = {
-        --   vim.api.nvim_get_runtime_file('', true),
-        -- }
       }
     })
   end,

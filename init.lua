@@ -1,5 +1,6 @@
 require "options"
 require "launch"
+require "winbar"
 
 -- Plugins
 spec("plugin.colorscheme")
@@ -12,6 +13,8 @@ spec("plugin.autopairs")
 
 require "plugin.lazy"
 require "keymaps"
+require "autocmds"
+require "statusline"
 
 require "lsp"
 
