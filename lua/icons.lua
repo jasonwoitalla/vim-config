@@ -20,10 +20,14 @@ M.developer = {
 }
 
 M.filetype = {
-    lua = '',
-    java = '',
-    typescript = '',
-    javascript = '',
+    lua = '󰢱',
+    typescript = '',
+    javascript = '',
+    python = '',
+    html = '',
+    css = '',
+    json = '',
+    yaml = '',
 }
 
 return M
