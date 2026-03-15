@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 LAZY_PLUGIN_SPEC = {
     checker = { notify = false},
 }

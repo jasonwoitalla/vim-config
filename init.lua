@@ -1,20 +1,21 @@
-require "options"
-require "launch"
-require "winbar"
+require "core.launch"
 
 -- Plugins
-spec("plugin.colorscheme")
-spec("plugin.treesitter")
-spec("plugin.telescope")
-spec("plugin.fugitive")
-spec("plugin.lspconfig")
-spec("plugin.oil")
 spec("plugin.autopairs")
+spec("plugin.colorscheme")
+spec("plugin.fzf")
+spec("plugin.oil")
+spec("plugin.treesitter")
 
 require "plugin.lazy"
-require "keymaps"
-require "autocmds"
-require "statusline"
 
-require "lsp"
+require "config.options"
+require "config.keymaps"
+require "config.autocmds"
+
+require "core.winbar"
+require "core.statusline"
+
+-- LSP (must be last)
+require "core.lsp"
 

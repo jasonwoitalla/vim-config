@@ -28,7 +28,8 @@ local M = {
             DiagnosticError = { fg = colors.error_red },
             DiagnosticWarn = { fg = colors.warn_yellow },
             DiagnosticHint = { fg = 'iris' },
-            DiagnosticInfo = { fg = 'pine' }
+            DiagnosticInfo = { fg = 'pine' },
+            StatusLineTerm = { fg = colors.bright_white, bg = 'surface' },
         })
 
         local winbar_groups = {

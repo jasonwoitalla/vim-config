@@ -18,8 +18,19 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
             and vim.api.nvim_buf_get_name(args.buf) ~= '' -- Has a file name
             and not vim.wo[0].diff -- Not in diff mode
         then
-            vim.wo.winbar = "%{%v:lua.require'winbar'.render()%}"
+            vim.wo.winbar = "%{%v:lua.require'core.winbar'.render()%}"
         end
     end,
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    callback = function(args)
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        if client:supports_method('textDocument/completion') then
+            local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+            client.server_capabilities.completionProvider.triggerCharacters = chars
+            vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
+        end
+    end
+})

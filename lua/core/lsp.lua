@@ -1,9 +1,17 @@
-vim.lsp.enable("pyright")
-vim.lsp.enable("ts_ls")
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("yamlls")
-vim.lsp.enable("helm_ls")
-vim.lsp.enable("terraformls")
+vim.lsp.enable({
+    'lua_ls',
+    'actionsls',
+    'ts_ls',
+})
+
+-- ctrl+w d (show the diagnositics)
+-- Diagnostics
+vim.diagnostic.config({
+    -- virtual_text = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
+})
 
 -- Lua Config
 vim.lsp.config('lua_ls', {

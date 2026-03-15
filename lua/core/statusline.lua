@@ -1,5 +1,5 @@
 -- Based on: https://github.com/MariaSolOs/dotfiles/blob/main/.config/nvim/lua/statusline.lua
-local icons = require 'icons'
+local icons = require 'core.icons'
 
 local M = {}
 
@@ -8,6 +8,9 @@ vim.g.qf_disable_statusline = 1
 
 -- Show the mode in my custom component instead
 vim.o.showmode = false
+
+-- Disable global statusline
+vim.o.laststatus = 2
 
 function M.mode_component()
     local mode_to_str = {
@@ -71,6 +74,18 @@ function M.mode_component()
     }
 end
 
+function M.terminal_component()
+    local mode = vim.api.nvim_get_mode().mode
+    local hl = mode == 't' and 'Insert' or 'Normal'
+    local mode_label = mode == 't' and 'INSERT' or 'NORMAL'
+
+    return table.concat {
+        string.format('%%#StatuslineModeSeparator%s#', hl),
+        string.format('%%#StatuslineMode%s#%s', hl, mode_label),
+        string.format('%%#StatuslineModeSeparator%s#', hl)
+    }
+end
+
 function M.git_component()
     local branch_name = vim.b.branch_name
     return string.format('%%#StatuslineTitle#%s %s', icons.developer['git'], branch_name)
@@ -124,7 +139,7 @@ function M.filetype_component()
     if icon == nil then
         icon = ''
     end
-    return string.format('%%#StatuslineTitle#%s%s', icon, filetype)
+    return string.format('%%#StatuslineTitle#%s %s', icon, filetype)
 end
 
 function M.encoding_component()
@@ -151,6 +166,30 @@ function M.render()
         end)
     end
 
+    if vim.bo.buftype == 'terminal' then
+        return table.concat {
+            concat_components {
+                M.terminal_component(),
+                string.format('%%#StatuslineTitle#%s', 'terminal')
+            },
+            '%#StatusLine#%=',
+            M.position_component(),
+            ' ',
+        }
+
+        -- return table.concat {
+        --     string.format('%%#StatuslineModeSeparator%s#', hl),
+        --     string.format('%%#StatuslineMode%s#%s', hl, mode_text),
+        --     string.format('%%#StatuslineModeSeparator%s#', hl),
+        --     '%#StatusLine#',
+        --     '    ',
+        --     '%#StatuslineTitle# TERMINAL',
+        --     '%#StatusLine#%=',
+        --     M.position_component(),
+        --     ' ',
+        -- }
+    end
+
     return table.concat {
         concat_components {
             M.mode_component(),
@@ -167,7 +206,15 @@ function M.render()
     }
 end
 
-vim.o.statusline = "%!v:lua.require'statusline'.render()"
+-- vim.o.statusline = "%!v:lua.require'statusline'.render()"
+-- Setup auto-commands to update statusline per-window
+local group = vim.api.nvim_create_augroup('CustomStatusLine', { clear = true })
+vim.api.nvim_create_autocmd({ 'WinEnter', 'BufWinEnter', 'FileType', 'TermOpen' }, {
+    group = group,
+    callback = function()
+        vim.wo.statusline = "%{%v:lua.require'core.statusline'.render()%}"
+    end,
+})
 
 return M
 
