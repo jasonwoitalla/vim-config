@@ -77,7 +77,15 @@ end
 return {
   cmd = { "actions-languageserver", "--stdio" },
   filetypes = { "yaml.ghactions" },
-  root_markers = { ".git" },
+  root_dir = function(bufnr, on_dir)
+    local parent = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+    if
+      vim.endswith(parent, "/.github/workflows")
+      or vim.endswith(parent, "/synced-files")
+    then
+      on_dir(parent)
+    end
+  end,
   init_options = {
     sessionToken = get_github_token(),
     repos = get_repos_config(),
