@@ -30,7 +30,9 @@ vim.filetype.add({
 ---------------
 --- Keymaps ---
 ---------------
-vim.keymap.set("n", "<leader>pv", vim.cmd.Oil, { desc = "Oil file browser" })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "<leader>pv", "<cmd>Oil --float<cr>", { desc = "Oil file browser" })
+vim.keymap.set("n", "<leader>pb", vim.cmd.Oil, { desc = "Oil file browser" })
 
 vim.keymap.set("n", "<leader>a", "<cmd>keepjumps normal! ggVG<cr>", { desc = "select all text" })
 
@@ -126,12 +128,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("my.lsp", {}),
   callback = function(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+    -- Enable auto-completion.
     if client:supports_method("textDocument/completion") then
       local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
       client.server_capabilities.completionProvider.triggerCharacters = chars
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
     end
-  end
+
+    -- Auto-format ("lint") on save.
+    if not client:supports_method("textDocument/willSaveWaitUntil") and client:supports_method("textDocument/formatting") then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("my.lsp", { clear = false }),
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+        end,
+      })
+    end
+  end,
 })
 
 -------------
@@ -153,10 +168,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   desc = "Attach file navigation winbar",
   callback = function(args)
     if
-        not vim.api.nvim_win_get_config(0).zindex         -- Not a floating window
-        and vim.bo[args.buf].buftype == ""                -- Normal buffer
-        and vim.api.nvim_buf_get_name(args.buf) ~= ""     -- Has a file name
-        and not vim.wo[0].diff                            -- Not in diff mode
+        not vim.api.nvim_win_get_config(0).zindex     -- Not a floating window
+        and vim.bo[args.buf].buftype == ""            -- Normal buffer
+        and vim.api.nvim_buf_get_name(args.buf) ~= "" -- Has a file name
+        and not vim.wo[0].diff                        -- Not in diff mode
     then
       vim.wo.winbar = "%{%v:lua.require('theme').winbar().render()%}"
     end
