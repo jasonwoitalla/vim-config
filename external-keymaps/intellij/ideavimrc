@@ -1,0 +1,72 @@
+let mapleader = " "
+
+set clipboard=unnamedplus,ideaput
+set number
+set scrolloff=4
+set incsearch
+set noignorecase
+set smartcase
+set nowrap
+
+sethandler <C-h> n:vim
+sethandler <C-j> n:vim
+sethandler <C-k> n:vim
+sethandler <C-l> n:vim
+sethandler <C-d> n:vim
+sethandler <C-u> n:vim
+sethandler <C-Space> i:vim
+sethandler <C-s> i:vim n-v:ide
+
+" IdeaVim's <Action> mappings require map, not noremap.
+nmap - <Action>(SelectInProjectView)
+nmap <leader>pv <Action>(SelectInProjectView)
+nmap <leader>pb <Action>(SelectInProjectView)
+
+nnoremap <leader>a ggVG
+nmap <leader>/ <Action>(CommentByLineComment)
+xmap <leader>/ <Action>(CommentByLineComment)
+nmap <leader>t <Action>(ActivateTerminalToolWindow)
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nmap H <Action>(PreviousTab)
+nmap L <Action>(NextTab)
+nmap <leader>bd <Action>(CloseContent)
+
+nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+
+xnoremap > >gv
+xnoremap < <gv
+xnoremap H <gv
+xnoremap L >gv
+xmap J <Action>(MoveLineDown)
+xmap K <Action>(MoveLineUp)
+
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap <Esc> :nohlsearch<CR>
+
+nmap <leader>sv <Action>(SplitVertically)
+nmap <leader>sh <Action>(SplitHorizontally)
+nmap <leader>ff <Action>(GotoFile)
+nmap <leader>fs <Action>(FindInPath)
+nmap <leader>F <Action>(ReformatCode)
+
+nmap gra <Action>(ShowIntentionActions)
+xmap gra <Action>(ShowIntentionActions)
+nmap gri <Action>(GotoImplementation)
+nmap grn <Action>(RenameElement)
+nmap grr <Action>(FindUsages)
+nmap grt <Action>(GotoTypeDeclaration)
+nmap gO <Action>(FileStructurePopup)
+nmap K <Action>(ShowHoverInfo)
+nmap gd <Action>(GotoDeclaration)
+nmap [d <Action>(GotoPreviousError)
+nmap ]d <Action>(GotoNextError)
+imap <C-Space> <Action>(CodeCompletion)
+imap <C-s> <Action>(ParameterInfo)

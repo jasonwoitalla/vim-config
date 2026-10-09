@@ -1,0 +1,12 @@
+[
+  {
+    "key": "ctrl+space",
+    "command": "editor.action.triggerSuggest",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert' && !editorReadonly"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "editor.action.triggerParameterHints",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  }
+]
